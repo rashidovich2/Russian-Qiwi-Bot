@@ -1,8 +1,8 @@
 <h1 align="center">Russian Qiwi Bot</h1>
 
-Эта программа упрощает работу с библиотекой SimpleQIWI, теперь достаточно запустить бота и ввести данные для того, чтобы воспользоваться функциями QIWI API. Вы можете получать баланс, переводить деньги, а также удалить добавлять и редактировать кошельки.
+Эта программа упрощает работу с библиотекой [SimpleQIWI](https://github.com/Emberium/SimpleQIWI), теперь достаточно запустить бота и ввести данные для того, чтобы воспользоваться функциями QIWI API. Вы можете получать баланс, переводить деньги, а также удалить добавлять и редактировать кошельки.
 
-It simplifies working with the SimpleQIWI library, now it is enough to launch the bot and enter data in order to use the functions of the QIWI API. You can receive balance, transfer money, and delete add and edit wallets.
+It simplifies working with the [SimpleQIWI](https://github.com/Emberium/SimpleQIWI) library, now it is enough to launch the bot and enter data in order to use the functions of the QIWI API. You can receive balance, transfer money, and delete add and edit wallets.
 
 ## Photos
 <a href="https://ibb.co/MnjkL5b"><img src="https://i.ibb.co/318mHYw/photo-2021-10-19-18-50-12.jpg" alt="photo-2021-10-19-18-50-12" border="0"></a>
