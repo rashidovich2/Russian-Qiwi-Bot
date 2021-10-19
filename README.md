@@ -12,6 +12,8 @@ It simplifies working with the SimpleQIWI library, now it is enough to launch th
 * [aiogram 2.15](https://pypi.org/project/aiogram/)
 * [python-dotenv 0.19.1](https://pypi.org/project/python-dotenv/)
 * [SimpleQIWI 0.7](https://pypi.org/project/SimpleQIWI/)
+* [PyMySQL 1.0.2](https://pypi.org/project/PyMySQL/)
+* [cryptography 35.0.0](https://pypi.org/project/cryptography/)
 
 ## How to use
 * Install the script
