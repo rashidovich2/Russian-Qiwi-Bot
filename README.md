@@ -5,6 +5,7 @@
 It simplifies working with the [SimpleQIWI](https://github.com/Emberium/SimpleQIWI) library, now it is enough to launch the bot and enter data in order to use the functions of the QIWI API. You can receive balance, transfer money, and delete add and edit wallets.
 
 ## Photos
+<a href="https://ibb.co/FKYLjSx"><img src="https://i.ibb.co/JKpwMfB/photo-2021-10-20-21-51-51.jpg" alt="photo-2021-10-20-21-51-51" border="0"></a><br /><a target='_blank' href='https://ru.imgbb.com/'>как разместить картинку на сайте</a><br />
 <a href="https://ibb.co/MnjkL5b"><img src="https://i.ibb.co/318mHYw/photo-2021-10-19-18-50-12.jpg" alt="photo-2021-10-19-18-50-12" border="0"></a>
 
 ## Required
