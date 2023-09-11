@@ -16,20 +16,17 @@ from keyboards.default.users.default_key import start_button
 
 db.init_db()
 
-all_users_file = open("joined.txt", "r")
-all_users = set()
-for line in all_users_file:
-    all_users.add(line.strip())
-all_users_file.close()
+with open("joined.txt", "r") as all_users_file:
+    all_users = {line.strip() for line in all_users_file}
 
 
 @dp.message_handler(CommandStart())
 async def bot_start(message: types.Message):
-    if not str(message.chat.id) in all_users:
+    if str(message.chat.id) not in all_users:
         first_name = str(message.from_user.first_name)
         last_name = str(message.from_user.last_name)
         user_id = int(message.chat.id)
-        today = datetime.datetime.today()
+        today = datetime.datetime.now()
         date = today.strftime("%Y-%m-%d")
         all_users_file = open("joined.txt", "a")
         all_users_file.write(str(message.chat.id) + "\n")
@@ -53,6 +50,53 @@ async def bot_start(message: types.Message):
                     text='🌀 Добавить номер 🌀', callback_data="🌀 Добавить номер 🌀")
                 keyboard.add(but_1)
                 keyboard.add(but_2)
+                await dp.bot.send_message(message.chat.id, "Ваши кошельки:", reply_markup=keyboard)
+            elif count == 10:
+                result = db.return_all_info(message.chat.id)
+                number_1 = result[0]['number']
+                number_2 = result[1]['number']
+                number_3 = result[2]['number']
+                number_4 = result[3]['number']
+                number_5 = result[4]['number']
+                number_6 = result[5]['number']
+                number_7 = result[6]['number']
+                number_8 = result[7]['number']
+                number_9 = result[8]['number']
+                number_10 = result[9]['number']
+                keyboard = types.InlineKeyboardMarkup()
+                but_1 = types.InlineKeyboardButton(
+                    text=f'{number_1}', callback_data=f'{number_1}')
+                but_2 = types.InlineKeyboardButton(
+                    text=f'{number_2}', callback_data=f'{number_2}')
+                but_3 = types.InlineKeyboardButton(
+                    text=f'{number_3}', callback_data=f'{number_3}')
+                but_4 = types.InlineKeyboardButton(
+                    text=f'{number_4}', callback_data=f'{number_4}')
+                but_5 = types.InlineKeyboardButton(
+                    text=f'{number_5}', callback_data=f'{number_5}')
+                but_6 = types.InlineKeyboardButton(
+                    text=f'{number_6}', callback_data=f'{number_6}')
+                but_7 = types.InlineKeyboardButton(
+                    text=f'{number_7}', callback_data=f'{number_7}')
+                but_8 = types.InlineKeyboardButton(
+                    text=f'{number_8}', callback_data=f'{number_8}')
+                but_9 = types.InlineKeyboardButton(
+                    text=f'{number_9}', callback_data=f'{number_9}')
+                but_10 = types.InlineKeyboardButton(
+                    text=f'{number_10}', callback_data=f'{number_10}')
+                but_11 = types.InlineKeyboardButton(
+                    text='🌀 Добавить номер 🌀', callback_data="🌀 Добавить номер 🌀")
+                keyboard.add(but_1)
+                keyboard.add(but_2)
+                keyboard.add(but_3)
+                keyboard.add(but_4)
+                keyboard.add(but_5)
+                keyboard.add(but_6)
+                keyboard.add(but_7)
+                keyboard.add(but_8)
+                keyboard.add(but_9)
+                keyboard.add(but_10)
+                keyboard.add(but_11)
                 await dp.bot.send_message(message.chat.id, "Ваши кошельки:", reply_markup=keyboard)
             elif count == 2:
                 result = db.return_all_info(message.chat.id)
@@ -285,51 +329,4 @@ async def bot_start(message: types.Message):
                 keyboard.add(but_8)
                 keyboard.add(but_9)
                 keyboard.add(but_10)
-                await dp.bot.send_message(message.chat.id, "Ваши кошельки:", reply_markup=keyboard)
-            elif count == 10:
-                result = db.return_all_info(message.chat.id)
-                number_1 = result[0]['number']
-                number_2 = result[1]['number']
-                number_3 = result[2]['number']
-                number_4 = result[3]['number']
-                number_5 = result[4]['number']
-                number_6 = result[5]['number']
-                number_7 = result[6]['number']
-                number_8 = result[7]['number']
-                number_9 = result[8]['number']
-                number_10 = result[9]['number']
-                keyboard = types.InlineKeyboardMarkup()
-                but_1 = types.InlineKeyboardButton(
-                    text=f'{number_1}', callback_data=f'{number_1}')
-                but_2 = types.InlineKeyboardButton(
-                    text=f'{number_2}', callback_data=f'{number_2}')
-                but_3 = types.InlineKeyboardButton(
-                    text=f'{number_3}', callback_data=f'{number_3}')
-                but_4 = types.InlineKeyboardButton(
-                    text=f'{number_4}', callback_data=f'{number_4}')
-                but_5 = types.InlineKeyboardButton(
-                    text=f'{number_5}', callback_data=f'{number_5}')
-                but_6 = types.InlineKeyboardButton(
-                    text=f'{number_6}', callback_data=f'{number_6}')
-                but_7 = types.InlineKeyboardButton(
-                    text=f'{number_7}', callback_data=f'{number_7}')
-                but_8 = types.InlineKeyboardButton(
-                    text=f'{number_8}', callback_data=f'{number_8}')
-                but_9 = types.InlineKeyboardButton(
-                    text=f'{number_9}', callback_data=f'{number_9}')
-                but_10 = types.InlineKeyboardButton(
-                    text=f'{number_10}', callback_data=f'{number_10}')
-                but_11 = types.InlineKeyboardButton(
-                    text='🌀 Добавить номер 🌀', callback_data="🌀 Добавить номер 🌀")
-                keyboard.add(but_1)
-                keyboard.add(but_2)
-                keyboard.add(but_3)
-                keyboard.add(but_4)
-                keyboard.add(but_5)
-                keyboard.add(but_6)
-                keyboard.add(but_7)
-                keyboard.add(but_8)
-                keyboard.add(but_9)
-                keyboard.add(but_10)
-                keyboard.add(but_11)
                 await dp.bot.send_message(message.chat.id, "Ваши кошельки:", reply_markup=keyboard)

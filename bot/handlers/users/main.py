@@ -644,7 +644,7 @@ async def back(call: types.CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(lambda call: True)
 async def answer(call: types.CallbackQuery, state: FSMContext):
-    if call.data[0:3] == 'del':
+    if call.data[:3] == 'del':
         keyboard = types.InlineKeyboardMarkup()
         but_1 = types.InlineKeyboardButton(
             text='Да', callback_data=f'yes{call.data[3:]}')
@@ -656,18 +656,18 @@ async def answer(call: types.CallbackQuery, state: FSMContext):
         keyboard.add(but_2)
         keyboard.add(but_3)
         await dp.bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="Вы уверенны?", reply_markup=keyboard, parse_mode='HTML')
-    elif call.data[0:3] == 'yes':
+    elif call.data[:3] == 'yes':
         try:
             db.delete_number(call.message.chat.id, call.data[3:])
             await dp.bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="🗑 Номер был успешно удален из базы.\n\nНажмите /start и вы попадете в меню взаимодействия с кошельками.", parse_mode='HTML')
         except:
             await dp.bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text="Ошибка!")
-    elif call.data[0:4] == 'edit':
+    elif call.data[:4] == 'edit':
         await dp.bot.send_message(call.message.chat.id, "Введите новый токен:", reply_markup=stop)
         async with state.proxy() as data:
             data["number"] = call.data[4:]
         await New_Token.Q1.set()
-    elif call.data[0:4] == 'send':
+    elif call.data[:4] == 'send':
         await dp.bot.send_message(call.message.chat.id, "Введите номер получателя:\n(в международном формате и без +)", reply_markup=stop)
         result = db.return_numbers_info(call.message.chat.id, call.data[4:])
         token = result["token"]
@@ -675,7 +675,7 @@ async def answer(call: types.CallbackQuery, state: FSMContext):
             data["number"] = call.data[4:]
             data["token"] = token
         await Send_Money.Q1.set()
-    elif call.data[0:4] == 'back':
+    elif call.data[:4] == 'back':
         result = db.return_numbers_info(call.message.chat.id, call.data[4:])
         date = result["date"]
         token = result["token"]
@@ -767,7 +767,7 @@ async def send_money_1(message: types.Message, state: FSMContext):
             await state.finish()
         else:
             async with state.proxy() as data:
-                data["account"] = "+" + message.text
+                data["account"] = f"+{message.text}"
             await dp.bot.send_message(message.chat.id, "Введите сумму:", reply_markup=stop)
             await Send_Money.Q2.set()
     except:
@@ -794,10 +794,9 @@ async def send_money_2(message: types.Message, state: FSMContext):
 @dp.message_handler(state=Send_Money.Q3)
 async def send_money_3(message: types.Message, state: FSMContext):
     try:
-        if message.text == "❌ Отмена":
+        if message.text == "❌ Отмена" or message.text != "Да":
             await dp.bot.send_message(message.chat.id, "📍 Вы отменили действие.", reply_markup=start_button)
-            await state.finish()
-        elif message.text == "Да":
+        else:
             async with state.proxy() as data:
                 account = data["account"]
                 amount = data["amount"]
@@ -806,10 +805,7 @@ async def send_money_3(message: types.Message, state: FSMContext):
             api = QApi(token=token, phone=number)
             api.pay(account=f"{account}", amount=f"{amount}")
             await dp.bot.send_message(message.chat.id, "✅ Деньги были успешно отправлены!", reply_markup=start_button)
-            await state.finish()
-        else:
-            await dp.bot.send_message(message.chat.id, "📍 Вы отменили действие.", reply_markup=start_button)
-            await state.finish()
+        await state.finish()
     except Exception as e:
         print(e)
         await dp.bot.send_message(message.chat.id, "❌ Ошибка!", reply_markup=start_button)
@@ -821,12 +817,11 @@ async def send_money_1(message: types.Message, state: FSMContext):
     try:
         if message.text == "❌ Отмена":
             await dp.bot.send_message(message.chat.id, "📍 Вы отменили действие.", reply_markup=start_button)
-            await state.finish()
         else:
             async with state.proxy() as data:
                 data["account"] = message.text
             await dp.bot.send_message(message.chat.id, "Введите сумму:", reply_markup=start_button)
-            await state.finish()
+        await state.finish()
     except:
         await dp.bot.send_message(message.chat.id, "❌ Ошибка!", reply_markup=start_button)
         await state.finish()
@@ -837,13 +832,12 @@ async def edit_token(message: types.Message, state: FSMContext):
     try:
         if message.text == "❌ Отмена":
             await dp.bot.send_message(message.chat.id, "📍 Вы отменили действие.", reply_markup=start_button)
-            await state.finish()
         else:
             async with state.proxy() as data:
                 number = data["number"]
             db.edit_token(message.text, number, message.chat.id)
             await dp.bot.send_message(message.chat.id, "✅ Токен был успешно изменён!\n\nНажмите /start и вы попадете в меню взаимодействия с кошельками.", reply_markup=start_button)
-            await state.finish()
+        await state.finish()
     except:
         await dp.bot.send_message(message.chat.id, "❌ Ошибка!", reply_markup=start_button)
         await state.finish()
@@ -857,7 +851,7 @@ async def add_number_2(message: types.Message, state: FSMContext):
             await state.finish()
         else:
             async with state.proxy() as data:
-                data["number"] = "+" + str(message.text)
+                data["number"] = f"+{str(message.text)}"
             await dp.bot.send_message(message.chat.id, "Введите токен:", reply_markup=stop)
             await New_Number.Q2.set()
     except:
@@ -877,7 +871,7 @@ async def add_number_3(message: types.Message, state: FSMContext):
                 number = data["number"]
             token = message.text
             api = QApi(token=token, phone=number)
-            today = datetime.datetime.today()
+            today = datetime.datetime.now()
             date = today.strftime("%Y-%m-%d")
             db.add_number(message.chat.id, token, number, date)
             result = int((db.return_numbers(message.chat.id))['numbers'])

@@ -84,24 +84,21 @@ def delete_number(conn, user_id, number):
 def select_all_users(conn):
     c = conn.cursor()
     c.execute("SELECT * FROM users")
-    all_results = c.fetchall()
-    return all_results
+    return c.fetchall()
 
 
 @ensure_connection
 def return_user_numbers(conn, user_id):
     c = conn.cursor()
     c.execute("SELECT COUNT(*) FROM numbers WHERE user_id = %s", user_id)
-    all_results = c.fetchone()
-    return all_results
+    return c.fetchone()
 
 
 @ensure_connection
 def return_numbers(conn, user_id):
     c = conn.cursor()
     c.execute("SELECT numbers FROM users WHERE user_id = %s", user_id)
-    all_results = c.fetchone()
-    return all_results
+    return c.fetchone()
 
 
 @ensure_connection
@@ -109,13 +106,11 @@ def return_numbers_info(conn, user_id, number):
     c = conn.cursor()
     c.execute(
         "SELECT * FROM numbers WHERE user_id = %s AND number = %s", (user_id, number))
-    all_results = c.fetchone()
-    return all_results
+    return c.fetchone()
 
 
 @ensure_connection
 def return_all_info(conn, user_id):
     c = conn.cursor()
     c.execute("SELECT * FROM numbers WHERE user_id = %s", user_id)
-    all_results = c.fetchall()
-    return all_results
+    return c.fetchall()
